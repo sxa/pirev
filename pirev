@@ -1,0 +1,29 @@
+#!/bin/sh
+# pirev copyright 2018 Stewart Addison
+# The information in here is derived from https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
+[ -z `uname -m | grep armv[67]l` ] && echo This is not a pi. You don\'t want me && exit 1
+REVISION=`cat /proc/cpuinfo | awk '/^Revision/{print$NF}'`
+[ -z "$REVISION" ] && echo No Revision field in /proc/cpuinfo. Are you sure this is a pi\? && exit 2
+case $REVISION in
+  0002) echo "Model B Rev 1 - 256MB";;
+  0003) echo "Model B Rev 1 D14 removed - 256MB";;
+  0004|0005|0006) echo "Model B Rev 2 - 256MB";;
+  0007|0008|0009) echo "Model A - 256MB";;
+  000d|000e|000f) echo "Model B Rev 2 - 512MB";;
+  0010|0013|900032) echo "Model B+ - 512MB";;
+  0011) echo "Compute Module - 512MB";;
+  0014) echo "Compute Module (Embest, China) - 512MB";;
+  0012) echo "Model A+ - 256MB";;
+  0015) echo "Model A+ (Embest, China) - 256MB or 512MB";;
+  a01041) echo "Pi 2 Model B v1.1 (Embest, China)- 1024MB";;
+  a21041) echo "Pi 2 Model B v1.1 (Sony, UK) - 1024MB";;
+  a22042) echo "Pi 2 Model B v1.2 - 1024MB";;
+  900092) echo "Pi Zero v1.2 - 512MB";;
+  900093) echo "Pi Zero v1.3 - 512MB";;
+  9000c1) echo "Pi Zero W - 512MB";;
+  a02082) echo "Pi 3 Model B - 1024MB";;
+  a22082) echo "Pi 3 Model B - 1024MB";;
+  a020d3) echo "Pi 3 Model B+ - 1024MB";;
+       *) echo Unrecognised model revision \"$REVISION\" - submit an issue at http://github.com/sxa555/pirev;;
+esac
+which pinout >/dev/null 2>&1 && echo For more information - try the \"pinout\" utility
